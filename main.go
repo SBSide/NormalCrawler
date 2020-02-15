@@ -3,5 +3,6 @@ package main
 import "fmt"
 
 func main() {
-  fmt.Println("Hello World")
+	name := 0x5861
+	fmt.Println(name)
 }
