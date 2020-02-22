@@ -5,12 +5,15 @@ import (
 	"strings"
 )
 
-func SuperAdd(numbers ...int) int {
-	total := 0
-	for _, number := range numbers {
-		total += number
+func CanIDrink(age int) bool {
+	switch koreanAge := age + 2; koreanAge {
+	case 10:
+		return false
+
+	case 18:
+		return true
 	}
-	return total
+	return false
 }
 
 func Multiply(a, b int) int {
