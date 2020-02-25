@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"main/banking"
+	"main/accounts"
 )
 
 func main() {
@@ -33,9 +33,6 @@ func main() {
 			favFood: favFood,
 		}
 		fmt.Println(me.name)*/
-	account := banking.Account{
-		Owner:   "Nyan",
-		Balance: 10000,
-	}
+	account := accounts.NewAccount("KIM")
 	fmt.Println(account)
 }
