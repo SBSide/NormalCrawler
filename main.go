@@ -35,4 +35,5 @@ func main() {
 		fmt.Println(me.name)*/
 	account := accounts.NewAccount("KIM")
 	fmt.Println(account)
+	account.Deposit(100)
 }
