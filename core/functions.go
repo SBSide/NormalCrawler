@@ -1,28 +1,25 @@
 package core
 
 import (
+	"errors"
 	"fmt"
-	"strings"
+	"net/http"
+	"time"
 )
 
-func CanIDrink(age int) bool {
-	switch koreanAge := age + 2; koreanAge {
-	case 10:
-		return false
+var errRequestFailed = errors.New("NET: Request failed.")
 
-	case 18:
-		return true
+func HitURL(url string) error {
+	fmt.Println("Checking URL:", url)
+	resp, err := http.Get(url)
+	if err != nil || resp.StatusCode >= 400 {
+		return errRequestFailed
 	}
-	return false
+	return nil
 }
 
-func Multiply(a, b int) int {
-	return a * b
-}
-
-func LenAndUpper(name string) (length int, uppercase string) {
-	defer fmt.Println("LenAndUpper : DONE")
-	length = len(name)
-	uppercase = strings.ToUpper(name)
-	return
+func IsSexy(person string, c chan bool) {
+	time.Sleep(time.Second * 5)
+	fmt.Println(person)
+	c <- true
 }
