@@ -1,25 +1,22 @@
 package core
 
 import (
-	"errors"
-	"fmt"
 	"net/http"
-	"time"
 )
 
-var errRequestFailed = errors.New("NET: Request failed.")
-
-func HitURL(url string) error {
-	fmt.Println("Checking URL:", url)
-	resp, err := http.Get(url)
-	if err != nil || resp.StatusCode >= 400 {
-		return errRequestFailed
-	}
-	return nil
+type RequestResult struct {
+	Url    string
+	Status string
 }
 
-func IsSexy(person string, c chan bool) {
-	time.Sleep(time.Second * 5)
-	fmt.Println(person)
-	c <- true
+func HitURL(url string, c chan<- RequestResult) {
+	resp, err := http.Get(url)
+	status := "OK"
+	if err != nil || resp.StatusCode >= 400 {
+		status = "FAILED"
+	}
+	c <- RequestResult{
+		url,
+		status,
+	}
 }
