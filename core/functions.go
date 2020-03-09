@@ -30,7 +30,7 @@ func GetPage(page int) []ExtractedJob {
 	fmt.Println("Requesting ", pageURL)
 	res, err := http.Get(pageURL)
 	checkErr(err)
-	checkCode(res)
+	checkCode(res) //
 
 	defer res.Body.Close()
 
