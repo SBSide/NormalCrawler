@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 var baseURL string = "https://kr.indeed.com/%EC%B7%A8%EC%97%85?q=python&limit=50"
@@ -15,19 +16,16 @@ type RequestResult struct {
 	Status string
 }
 
-func HitURL(url string, c chan<- RequestResult) {
-	resp, err := http.Get(url)
-	status := "OK"
-	if err != nil || resp.StatusCode >= 400 {
-		status = "FAILED"
-	}
-	c <- RequestResult{
-		url,
-		status,
-	}
+type ExtractedJob struct {
+	Id       string
+	Title    string
+	Location string
+	Salary   string
+	Summary  string
 }
 
-func GetPage(page int) {
+func GetPage(page int) []ExtractedJob {
+	var jobs []ExtractedJob
 	pageURL := baseURL + "&start=" + strconv.Itoa(page*50)
 	fmt.Println("Requesting ", pageURL)
 	res, err := http.Get(pageURL)
@@ -40,6 +38,31 @@ func GetPage(page int) {
 	checkErr(err)
 
 	searchCards := doc.Find(".jobsearch-SerpJobCard")
+
+	searchCards.Each(func(i int, card *goquery.Selection) {
+		job := extractJob(card)
+		jobs = append(jobs, job)
+	})
+	return jobs
+}
+
+func extractJob(card *goquery.Selection) ExtractedJob {
+	id, _ := card.Attr("data-jk")
+	title := cleanString(card.Find(".title>a").Text())
+	location := cleanString(card.Find(".sjcl").Text())
+	salary := cleanString(card.Find(".salaryText").Text())
+	summary := cleanString(card.Find(".summary").Text())
+	return ExtractedJob{
+		id,
+		title,
+		location,
+		salary,
+		summary,
+	}
+}
+
+func cleanString(str string) string {
+	return strings.Join(strings.Fields(strings.TrimSpace(str)), " ")
 }
 
 func GetPages() int {
