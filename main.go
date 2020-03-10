@@ -13,5 +13,6 @@ func main() {
 		extractedJobs := core.GetPage(i)
 		jobs = append(jobs, extractedJobs...)
 	}
-	fmt.Println(jobs)
+	core.WriteJobs(jobs)
+	fmt.Println("Done, extracted jobs : ", len(jobs))
 }
