@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-var baseURL string = "https://kr.indeed.com/%EC%B7%A8%EC%97%85?q=python&limit=50"
+var baseURL string = "https://kr.indeed.com/%EC%B7%A8%EC%97%85?q=java&limit=50"
 
 type RequestResult struct {
 	Url    string
